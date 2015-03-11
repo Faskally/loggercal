@@ -2,7 +2,7 @@ Package: loggercal
 Title: Estimation of Calibration Equations for Temperature Data Loggers
 Version: 0.0.1
 Authors@R: "Colin Millar <C.Millar@marlab.ac.uk> [aut, cre]"
-Description: TODO. What the package does (one paragraph)
+Description: TODO. 
 Depends: 
     R (>= 3.1.2)
 Suggests:

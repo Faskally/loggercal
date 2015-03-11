@@ -7,9 +7,9 @@
 tableCoefs(coefs, cal)
 }
 \arguments{
-\item{x}{A number.}
+\item{coefs}{A number.}
 
-\item{y}{A number.}
+\item{cal}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

@@ -9,7 +9,7 @@ trim(x, ...)
 \arguments{
 \item{x}{A number.}
 
-\item{y}{A number.}
+\item{...}{Numeric, complex, or logical vectors.}
 }
 \value{
 The sum of \code{x} and \code{y}.

@@ -7,9 +7,11 @@
 calibration(internalCal, externalCalMod, n = 99)
 }
 \arguments{
-\item{x}{A number.}
+\item{internalCal}{A number.}
 
-\item{y}{A number.}
+\item{externalCalMod}{A number.}
+
+\item{n}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

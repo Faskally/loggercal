@@ -7,9 +7,7 @@
 readInternalCal(fname)
 }
 \arguments{
-\item{x}{A number.}
-
-\item{y}{A number.}
+\item{fname}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

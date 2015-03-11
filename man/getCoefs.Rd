@@ -7,9 +7,7 @@
 getCoefs(reverseCalMod)
 }
 \arguments{
-\item{x}{A number.}
-
-\item{y}{A number.}
+\item{reverseCalMod}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

@@ -151,40 +151,17 @@ doCalibration <- function(nsim = 9999) {
 #' @examples
 #' 1 + 1
 savePlot <- function(filename, plotFunc, width = 17, height = 17, ppi = 1200) {
-  png(file = filename, width / 2.54 * ppi, height / 2.54 * ppi, res = ppi)
+  png(filename = filename, width / 2.54 * ppi, height / 2.54 * ppi, res = ppi)
   plotFunc()
   dev.off()
 }
 
 
-
-
-
-# FILTERS FOR CHOOSEING CALIBRATION FILES.
-# note only available on windows.
 #' Add together two numbers.
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
-#' @return The sum of \code{x} and \code{y}.
-#' @examples
-#' 1 + 1
-myFilters <- matrix(c("UKAS calibration", "UKAS*.csv",
-                      "Internal calibration", "full*.csv",
-                      "all calibration", "*.csv",
-                      "all files", "*.*"), ncol = 2, byrow = TRUE)
-
-
-
-
-#' Add together two numbers.
-#' 
-#' Description
-#'
-#' @param x A number.
-#' @param y A number.
+#' @param cal A number.
 #' @return The sum of \code{x} and \code{y}.
 findStartSec <- function(cal) {
   main <- "Zoom and choose an start point\nClick stop when done"
@@ -207,8 +184,7 @@ findStartSec <- function(cal) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param cal A number.
 #' @return The sum of \code{x} and \code{y}.
 findStopSec <- function(cal) {
   main <- "Zoom and choose an end point\nClick stop when done"
@@ -234,6 +210,8 @@ findStopSec <- function(cal) {
 #'
 #' @param x A number.
 #' @param y A number.
+#' @param lag A number.
+#' @param formula A number.
 #' @return The sum of \code{x} and \code{y}.
 lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
   if (lag > 0) {
@@ -253,8 +231,8 @@ lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param cal A number.
+#' @param lagtry A number.
 #' @return The sum of \code{x} and \code{y}.
 findLag <- function(cal, lagtry = -10:10) {
 
@@ -284,8 +262,7 @@ findLag <- function(cal, lagtry = -10:10) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param fname A number.
 #' @return The sum of \code{x} and \code{y}.
 readInternalCal <- function(fname) {
   crosscal <- read.csv(fname, skip = 5, header = FALSE, row.names = 1)
@@ -328,7 +305,7 @@ readInternalCal <- function(fname) {
 #' Description
 #'
 #' @param x A number.
-#' @param y A number.
+#' @param ... Numeric, complex, or logical vectors.
 #' @return The sum of \code{x} and \code{y}.
 print.InternalCal <- function(x, ...) {
   cat("\nInternal calibration experiment:\n")
@@ -349,7 +326,9 @@ print.InternalCal <- function(x, ...) {
 #' Description
 #'
 #' @param x A number.
-#' @param y A number.
+#' @param type A number.
+#' @param xlim A number.
+#' @param main A number.
 #' @return The sum of \code{x} and \code{y}.
 plot.InternalCal <- function(x, type = "scaled", xlim = NULL, main = "") {
   type <- match.arg(type, c("scaled", "raw"))
@@ -386,8 +365,7 @@ plot.InternalCal <- function(x, type = "scaled", xlim = NULL, main = "") {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param fnames A number.
 #' @return The sum of \code{x} and \code{y}.
 readExternalCal <- function(fnames) {
   data <- lapply(fnames, function(x) {
@@ -415,7 +393,7 @@ readExternalCal <- function(fnames) {
 #' Description
 #'
 #' @param x A number.
-#' @param y A number.
+#' @param ... Numeric, complex, or logical vectors.
 #' @return The sum of \code{x} and \code{y}.
 print.ExternalCal <- function(x, ...) {
   cat("\nExternal calibration serial numbers:\n")
@@ -435,7 +413,7 @@ print.ExternalCal <- function(x, ...) {
 #' Description
 #'
 #' @param x A number.
-#' @param y A number.
+#' @param ... Numeric, complex, or logical vectors.
 #' @return The sum of \code{x} and \code{y}.
 trim <- function(x, ...) {
   which <- x $ date $ sec > (x $ startStopSec[1]) &
@@ -455,8 +433,9 @@ trim <- function(x, ...) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param internalCal A number.
+#' @param externalCalMod A number.
+#' @param n A number.
 #' @return The sum of \code{x} and \code{y}.
 calibration <- function(internalCal, externalCalMod, n = 99) {
 # this function:
@@ -537,8 +516,7 @@ calibration <- function(internalCal, externalCalMod, n = 99) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param reverseCalMod A number.
 #' @return The sum of \code{x} and \code{y}.
 getCoefs <- function(reverseCalMod) {
   Cal_coef <- 
@@ -571,8 +549,8 @@ getCoefs <- function(reverseCalMod) {
 #' 
 #' Description
 #'
-#' @param x A number.
-#' @param y A number.
+#' @param coefs A number.
+#' @param cal A number.
 #' @return The sum of \code{x} and \code{y}.
 tableCoefs <- function(coefs, cal) {
 

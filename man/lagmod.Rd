@@ -10,6 +10,10 @@ lagmod(x, y, lag = 0, formula = y ~ poly(x, 2))
 \item{x}{A number.}
 
 \item{y}{A number.}
+
+\item{lag}{A number.}
+
+\item{formula}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

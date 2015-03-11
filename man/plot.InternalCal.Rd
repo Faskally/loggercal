@@ -9,7 +9,11 @@
 \arguments{
 \item{x}{A number.}
 
-\item{y}{A number.}
+\item{type}{A number.}
+
+\item{xlim}{A number.}
+
+\item{main}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

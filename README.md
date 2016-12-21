@@ -132,3 +132,17 @@ internalCal <- findStartSec(internalCal)
 internalCal <- findStopSec(internalCal)
 plot(internalCal)
 ```
+
+run the calibration
+-------------------
+
+The function `calibration` runs the full calibration methif
+
+``` r
+cal <- calibration(internalCal, externalCalMod, n = 5)
+```
+
+``` r
+coefs <- getCoefs(cal)
+tabCoefs <- tableCoefs(coefs, cal = internalCal)
+```

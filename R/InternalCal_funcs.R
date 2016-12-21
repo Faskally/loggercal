@@ -2,7 +2,7 @@
 #'
 #' Description
 #'
-#' @param fname A number.
+#' @param dirname A number.
 #' @return The sum of \code{x} and \code{y}.
 #' @export
 
@@ -82,14 +82,14 @@ print.InternalCal <- function(x, ...) {
 #' @param x A number.
 #' @param type A number.
 #' @param xlim A number.
-#' @param main A number.
+#' @param ... other graphics parameters to pass on to plotting commands.
 #' @return The sum of \code{x} and \code{y}.
 #' @export
 #' @importFrom grDevices grey
 #' @importFrom graphics abline
 #' @importFrom graphics matplot
 
-plot.InternalCal <- function(x, y = NULL, type = "scaled", xlim = NULL, main = "") {
+plot.InternalCal <- function(x, type = "scaled", xlim = NULL, ...) {
 
   type <- match.arg(type, c("scaled", "raw"))
 
@@ -115,6 +115,6 @@ plot.InternalCal <- function(x, y = NULL, type = "scaled", xlim = NULL, main = "
   matplot(y = yval, x = xval, type = "l", lty = 1,
           ylab = expression(paste("Temperature ", degree,"C", sep = "")),
           xlab = "Minutes since start of experiment",
-          ylim = ylim, xlim = xlim, main = main)
+          ylim = ylim, xlim = xlim, ...)
   abline(v = x $ startStopSec / 60, col = grey(0.5), lty = 2)
 }

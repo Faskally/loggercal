@@ -4,8 +4,7 @@
 \alias{plot.InternalCal}
 \title{Add together two numbers.}
 \usage{
-\method{plot}{InternalCal}(x, y = NULL, type = "scaled", xlim = NULL,
-  main = "")
+\method{plot}{InternalCal}(x, type = "scaled", xlim = NULL, ...)
 }
 \arguments{
 \item{x}{A number.}
@@ -14,7 +13,7 @@
 
 \item{xlim}{A number.}
 
-\item{main}{A number.}
+\item{...}{other graphics parameters to pass on to plotting commands.}
 }
 \value{
 The sum of \code{x} and \code{y}.

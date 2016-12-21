@@ -7,7 +7,7 @@
 readInternalCal(dirname)
 }
 \arguments{
-\item{fname}{A number.}
+\item{dirname}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

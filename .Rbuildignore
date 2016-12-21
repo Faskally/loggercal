@@ -1,3 +1,5 @@
 ^data-raw$
-notes.md
 .travis.yml
+^.*\.Rproj$
+^\.Rproj\.user$
+ReadMe.Rmd

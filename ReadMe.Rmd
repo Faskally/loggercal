@@ -5,6 +5,8 @@ date: 21th December 2016
 output:
   md_document:
     variant: markdown_github
+    toc: true
+    toc_depth: 2
 ---
 
 [![Build Status](https://travis-ci.org/Faskally/loggercal.svg?branch=master)](https://travis-ci.org/Faskally/loggercal)
@@ -83,13 +85,60 @@ plot(internalCal)
 
 ## run the calibration
 
-The function `calibration` runs the full calibration methif
+The function `calibration` runs the full calibration method.  Here, as we are running an example,
+we only use 5 simulations to back calculate the logger error.  Normally a large number like 99 or 
+999 should be used, but this can take up to a day to run.
 
-```{r run calibration, eval = FALSE}
+```{r run calibration}
 cal <- calibration(internalCal, externalCalMod, n = 5)
 ```
 
-```{r table_coefficients, eval = FALSE}
+Once the calibration simulations have completed, the coefficients from the calibrations are
+extracted and tabled (e.g. for import into a logger database with calibration functionality).
+
+```{r table_coefficients}
 coefs <- getCoefs(cal)
 tabCoefs <- tableCoefs(coefs, cal = internalCal)
+tabCoefs
+```
+
+
+## A full analysis script
+
+```{r full_analysis, eval = FALSE}
+library(loggercal)
+
+externalCalDir <- "data-raw/External Calibrations/"
+internalCalDir <- "data-raw/100214/"
+
+# external calibration -------------------------
+
+# read in external calibrations
+ukas <- readExternalCal(externalCalDir)
+
+# fit a model to the external calibration data
+externalCalMod <- lapply(ukas $ data, function(x) lm(cal ~ poly(control, 2), data = x[-1,]))
+
+# internal calibration -------------------------
+
+# read in internal calibration experiment
+internalCal <- readInternalCal(internalCalDir)
+
+# trim off ends
+internalCal$startStopSec <- c(100,9900) * 60
+
+# plot to check
+plot(internalCal)
+
+# perform a calibration ------------
+
+cal <- calibration(internalCal, externalCalMod, n = 5)
+
+# convert coefficients to non orthogonal polynomials
+coefs <- getCoefs(cal)
+tabCoefs <- tableCoefs(coefs, cal = internalCal)
+
+write.csv(file = file.path(file.path(internalCalDir), "coefficients.csv"), tabCoefs, row.names = FALSE)
+
+# Done -----------------
 ```

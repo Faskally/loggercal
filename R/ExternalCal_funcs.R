@@ -18,6 +18,12 @@ readExternalCal <- function(fnames) {
 
   names(data) <- SN
 
+  # report files read to user
+  message("Calibration file summary\n\n",
+          "  Current working directory:\n\t", getwd(), "\n",
+          "  Files read:\n\t",
+          paste(path.expand(fnames), collapse = "\n\t"))
+
   out <- list(SN = SN, data = data)
   class(out) <- "ExternalCal"
   out

@@ -37,6 +37,7 @@ In this case we find two external calibrations.  This is read in using the `logg
 
 ```{r read_ukas}
 ukas <- readExternalCal(externalCalFiles)
+str(ukas)
 ```
 
 we now fit a model to the external calibration data

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calibration.R
 \name{calibration}
 \alias{calibration}
-\title{Add together two numbers.}
+\title{Fit a calibration regression and estimate logger error.}
 \usage{
 calibration(internalCal, externalCalMod, n = 99)
 }
@@ -14,9 +14,14 @@ calibration(internalCal, externalCalMod, n = 99)
 \item{n}{A number.}
 }
 \value{
-The sum of \code{x} and \code{y}.
+models for calibration and SE models.
 }
 \description{
-Description
+This function:
+   * identifies calibration loggers
+   * chooses one calibration logger to be used
+   * finds the best lag
+   * fits a calibration model to each non-calibration logger
+   * returns models for calibration and SE models
 }
 

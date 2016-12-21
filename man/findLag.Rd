@@ -4,12 +4,12 @@
 \alias{findLag}
 \title{Add together two numbers.}
 \usage{
-findLag(cal, lagtry = -10:10)
+findLag(internalCal, lagtry = -10:10)
 }
 \arguments{
-\item{cal}{A number.}
-
 \item{lagtry}{A number.}
+
+\item{cal}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.

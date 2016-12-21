@@ -85,12 +85,12 @@ lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
 #' @export
 #' @importFrom stats dnorm
 #' @importFrom stats sd
-findLag <- function(cal, lagtry = -10:10) {
+findLag <- function(internalCal, lagtry = -10:10) {
 
   resids <- function(lag = 0) {
-    apply(cal $ data[,!cal $ meta $ ukas], 2,
+    apply(internalCal $ data[,!internalCal $ meta $ ukas], 2,
       function(x, y, lag) residuals(lagmod(x, y, lag)),
-      y = cal $ data[,cal $ meta $ ukas][,1],
+      y = internalCal $ data[,internalCal $ meta $ ukas, drop = FALSE][,1],
       lag = lag)
   }
 

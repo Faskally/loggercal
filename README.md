@@ -1,6 +1,3 @@
--   [Temperature Logger Calibration](#temperature-logger-calibration)
-    -   [Quick example](#quick-example)
-
 Temperature Logger Calibration
 ==============================
 

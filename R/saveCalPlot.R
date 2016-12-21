@@ -13,7 +13,7 @@
 #' @importFrom grDevices png
 #' @importFrom grDevices dev.off
 #' @export
-savePlot <- function(filename, plotFunc, width = 17, height = 17, ppi = 1200) {
+saveCalPlot <- function(filename, plotFunc, width = 17, height = 17, ppi = 1200) {
   png(filename = filename, width / 2.54 * ppi, height / 2.54 * ppi, res = ppi)
   plotFunc()
   dev.off()

@@ -4,10 +4,10 @@
 \alias{readExternalCal}
 \title{Add together two numbers.}
 \usage{
-readExternalCal(fnames)
+readExternalCal(dirname)
 }
 \arguments{
-\item{fnames}{A number.}
+\item{dirname}{The directory containing the UKAS calibration files.}
 }
 \value{
 The sum of \code{x} and \code{y}.

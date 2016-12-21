@@ -2,11 +2,15 @@
 #'
 #' Description
 #'
-#' @param fnames A number.
+#' @param dirname The directory containing the UKAS calibration files.
 #' @return The sum of \code{x} and \code{y}.
 #' @export
 #' @importFrom utils read.csv
-readExternalCal <- function(fnames) {
+readExternalCal <- function(dirname) {
+
+  # get all files in the directory
+  fnames <- list.files(dirname, full.names = TRUE)
+
   data <- lapply(fnames, function(x) {
     out <- read.csv(fnames[1], skip = 1)
     names(out)[1:2] <- c("control", "cal")

@@ -6,7 +6,17 @@
 #' @return The sum of \code{x} and \code{y}.
 #' @export
 
-readInternalCal <- function(fname) {
+readInternalCal <- function(dirname) {
+
+  # form internal calibration file name
+  fname <- paste0(dirname, "/FullCalibration_", basename(dirname), ".csv")
+
+  # report files read to user
+  message("Reading calibration experiment\n\n",
+          "  Current working directory:\n\t", getwd(), "\n",
+          "  Files:\n\t",
+          paste(path.expand(fname), collapse = "\n\t"))
+
   crosscal <- read.csv(fname, skip = 5, header = FALSE, row.names = 1)
 
   # only use complete cases... so if a mix of loggers used this could cause
@@ -79,7 +89,8 @@ print.InternalCal <- function(x, ...) {
 #' @importFrom graphics abline
 #' @importFrom graphics matplot
 
-plot.InternalCal <- function(x, type = "scaled", xlim = NULL, main = "") {
+plot.InternalCal <- function(x, y = NULL, type = "scaled", xlim = NULL, main = "") {
+
   type <- match.arg(type, c("scaled", "raw"))
 
   xval <- x $ date $ sec / 60
@@ -90,7 +101,7 @@ plot.InternalCal <- function(x, type = "scaled", xlim = NULL, main = "") {
     yval <- x $ data
   }
 
-  # calculate y limits
+  # calculate x limits
   which <- x $ date $ sec > (x $ startStopSec[1]) &
            x $ date $ sec < (x $ startStopSec[2])
   if (!is.null(xlim)) {

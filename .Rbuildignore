@@ -3,3 +3,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ReadMe.Rmd
+
+R/run_all.R

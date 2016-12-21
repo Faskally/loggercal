@@ -12,3 +12,5 @@
 
 # others
 .Rproj.user
+
+R/run_all.R

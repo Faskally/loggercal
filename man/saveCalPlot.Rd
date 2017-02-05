@@ -23,4 +23,3 @@ Description
 \examples{
 1 + 1
 }
-

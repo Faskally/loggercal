@@ -16,6 +16,9 @@
 #' @importFrom stats predict
 #' @importFrom stats residuals
 #' @importFrom stats rnorm
+#' @importFrom stats fitted
+#' @importFrom stats optim
+#' @importFrom stats sigma
 #'
 #' @export
 
@@ -35,19 +38,30 @@ calibration <- function(internalCal, externalCalMod, n = 99) {
   calSN <- internalCal$meta$SN[calID[1]]
   internalCal <- trim(internalCal)
 
-  lag <- findLag(internalCal)
+#  lag <- findLag(internalCal)
 
   internalCalMod <-
-    apply(internalCal$data[,!internalCal$meta$ukas], 2,
+    apply(internalCal$data[,!internalCal$meta$ukas, drop = FALSE],
+          2,
           lagmod,
-          y = internalCal$data[,internalCal$meta$ukas, drop = FALSE][,1],
-          lag = lag)
+          x = internalCal$data[,calSN],
+          lag = 0,
+          formula = y ~ s(x, k=5))
 
-  rtrue2test <- function(true, ukasmodel, calmodel, n = 1000) {
+  # ukasmodel <- externalCalMod[[1]]
+  # calmodel <- internalCalMod[[1]]
+  # true <- seq(-0.1, 0.1, length = 100)
+  dtrgGivenTrue <- function(true, trgt, ukasmodel, calmodel, log = TRUE) {
+    # for a given trueth, what is the distribution of ukas logger temps
     predcal <- predict(ukasmodel, newdata = data.frame(control = true), se = TRUE)
-    rpredcal <- rnorm(n, predcal $ fit, predcal $ se.fit + summary(ukasmodel) $ sigma)
-    predtest <- predict(calmodel, newdata = list(x = rpredcal), se = TRUE)
-    rnorm(n, predtest $ fit, predtest $ se.fit + summary(calmodel) $ sigma)
+    # for a given ukas logger temp, what is the distribution of the test logger observations
+    predtest <- predict(calmodel, newdata = list(x = predcal$fit), se = TRUE)
+    #
+    dnorm(trgt,
+          predtest$fit,
+          sqrt(predcal $se.fit^2 + sigma(ukasmodel)^2 +
+               predtest$se.fit^2 + sigma(calmodel)^2),
+          log = log)
   }
 
   out <-
@@ -59,25 +73,43 @@ calibration <- function(internalCal, externalCalMod, n = 99) {
         # select the appropriate external calibration model
         calibrationmod <- externalCalMod[[calSN]]
         # choose 'design' points to predict on
-        targets <- 0:30
-        reverse <-
-          lapply(targets, function(trgt) {
-            # what is a sensible range to look for the truth over...
-            trues <- trgt + seq(-0.3, 0.3, by = 0.001)
-            probs <- sapply(trues, function(i) {
-                ts <- rtrue2test(i, calibrationmod, loggermod, n = n)
-                mean(abs(ts - trgt) < 0.001)
-              })
-            probs <- probs / sum(probs)
-            list(x = trues, prob = probs)
+        targets <- seq(min(fitted(calibrationmod)),
+                       max(fitted(calibrationmod)),
+                       length = 40)
+        loggerdist <-
+          sapply(targets, function(trgt) {
+            # maximise the profile likelihood
+            f <- function(true) {
+              -1 * dtrgGivenTrue(true,
+                                 trgt = trgt,
+                                 ukasmodel = calibrationmod,
+                                 calmodel = loggermod, log = TRUE)
+            }
+            opt <- suppressWarnings(optim(trgt, f, hessian = TRUE))
+            c(mean = opt$par, sd = 1 / sqrt(opt$hessian))
+            #if (FALSE) {
+            #  # integration points
+            #  true <- opt$par + 4 / sqrt(opt$hessian)*seq( -1, 1, length = 1000)
+            #  # calculate the exact distribution
+            #  probs <- dtrgGivenTrue(true,
+            #                       trgt = trgt,
+            #                       ukasmodel = calibrationmod,
+            #                       calmodel = loggermod, log = FALSE)
+            #  probs <- probs / sum(probs)
+            #  plot(true, probs, type = "l")
+            #  within(list(), {
+            #    mean = sum(true * probs)
+            #    sd = sqrt(sum((true - mean)^2 * probs))
+            #    })
+            #}
       })
 
-      # simulatereverseplots
-      loggermeans <- sapply(reverse, function(x) sum(x $ x * x $ prob))
-      CalMod <- lm(loggermeans ~ poly(targets, 2))
+      loggermeans <- loggerdist["mean",]
+      loggerse <- loggerdist["sd",]
 
-      loggerse <- sapply(reverse, function(x) with(x, sqrt(sum((x - sum(x * prob))^2 * prob))))
-      CalSEMod <- lm(loggerse ~ poly(targets, 4))
+      # fit lines to predictions
+      CalMod <- lm(loggermeans ~ 1 + poly(targets, 2, raw = FALSE))
+      CalSEMod <- lm(loggerse ~ 1 + poly(targets, 4, raw = FALSE))
 
       list(CalMod = CalMod, CalSEMod = CalSEMod)
     })

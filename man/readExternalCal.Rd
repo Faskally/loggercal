@@ -15,4 +15,3 @@ The sum of \code{x} and \code{y}.
 \description{
 Description
 }
-

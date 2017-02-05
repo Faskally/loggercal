@@ -7,9 +7,9 @@
 findLag(internalCal, lagtry = -10:10)
 }
 \arguments{
-\item{lagtry}{A number.}
+\item{internalCal}{A number.}
 
-\item{cal}{A number.}
+\item{lagtry}{A number.}
 }
 \value{
 The sum of \code{x} and \code{y}.
@@ -17,4 +17,3 @@ The sum of \code{x} and \code{y}.
 \description{
 Description
 }
-

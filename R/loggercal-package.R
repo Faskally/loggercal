@@ -14,6 +14,5 @@
 #'
 #' @author Colin Millar.
 #'
-
 NA
 

@@ -24,4 +24,3 @@ This function:
    * fits a calibration model to each non-calibration logger
    * returns models for calibration and SE models
 }
-

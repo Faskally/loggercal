@@ -2,8 +2,8 @@
 % Please edit documentation in R/loggercal-package.R
 \docType{package}
 \name{loggercal-package}
-\alias{loggercal}
 \alias{loggercal-package}
+\alias{loggercal}
 \title{Tools for calibrating field temperature loggers}
 \description{
 Contains all functions required to (1) Read in temperature logger calibration data
@@ -14,4 +14,3 @@ Contains all functions required to (1) Read in temperature logger calibration da
 \author{
 Colin Millar.
 }
-

@@ -61,7 +61,8 @@ findStopSec <- function(cal) {
 #' @return The sum of \code{x} and \code{y}.
 #' @export
 #' @importFrom utils head
-lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
+#' @importFrom mgcv gam
+lagmod <- function(x, y, lag = 0, formula = y ~ s(x, k = 3)) {
   if (lag > 0) {
     x <- head(x, length(x) - lag)
     y <- tail(y, length(y) - lag)
@@ -69,7 +70,7 @@ lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
     x <- tail(x, length(x) + lag)
     y <- head(y, length(y) + lag)
   }
-  lm(formula)
+  gam(formula, data = list(x = x, y = y))
 }
 
 
@@ -79,7 +80,7 @@ lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
 #'
 #' Description
 #'
-#' @param cal A number.
+#' @param internalCal A number.
 #' @param lagtry A number.
 #' @return The sum of \code{x} and \code{y}.
 #' @export
@@ -88,7 +89,7 @@ lagmod <- function(x, y, lag = 0, formula = y ~ poly(x, 2)) {
 findLag <- function(internalCal, lagtry = -10:10) {
 
   resids <- function(lag = 0) {
-    apply(internalCal $ data[,!internalCal $ meta $ ukas], 2,
+    apply(internalCal $ data[,!internalCal $ meta $ ukas, drop = FALSE], 2,
       function(x, y, lag) residuals(lagmod(x, y, lag)),
       y = internalCal $ data[,internalCal $ meta $ ukas, drop = FALSE][,1],
       lag = lag)

@@ -4,7 +4,7 @@
 \alias{lagmod}
 \title{Add together two numbers.}
 \usage{
-lagmod(x, y, lag = 0, formula = y ~ poly(x, 2))
+lagmod(x, y, lag = 0, formula = y ~ s(x, k = 3))
 }
 \arguments{
 \item{x}{A number.}
@@ -21,4 +21,3 @@ The sum of \code{x} and \code{y}.
 \description{
 Description
 }
-

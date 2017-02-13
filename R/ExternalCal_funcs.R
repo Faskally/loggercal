@@ -12,7 +12,7 @@ readExternalCal <- function(dirname) {
   fnames <- list.files(dirname, full.names = TRUE)
 
   data <- lapply(fnames, function(x) {
-    out <- read.csv(fnames[1], skip = 1)
+    out <- read.csv(x, skip = 1)
     names(out)[1:2] <- c("control", "cal")
     out
   })

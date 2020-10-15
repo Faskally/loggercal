@@ -46,14 +46,22 @@
 #' @importFrom grDevices pdf
 #' @importFrom graphics lines par mtext
 #' @importFrom utils choose.dir flush.console write.csv
+#' @importFrom tcltk tk_choose.dir
 #' @export
 doCalibration <- function(path = ".", nsim = 999, trim = FALSE) {
 
+  choose_directory <- function(default, caption) {
+    if (.Platform$OS.type == "windows") {
+      choose.dir(default = default, caption = caption)
+    } else {
+      tk_choose.dir(default = default, caption = caption)
+    }
+  }
 
   # CHOOSE THE FILEPATH WHERE YOUR INTERNAL CALIBRATION EXPERIMENT RESIDES
   default <- dir(file.path(path, "Logger_calibrations"), full.names = TRUE, pattern = "^[0-9]{6}$")
   if (length(default) == 0) default <- path
-  internalCalDir <- choose.dir(default = default, caption = "CHOOSE INTERNAL CALIBRATION DIRECTORY")
+  internalCalDir <- choose_directory(default = default, caption = "CHOOSE INTERNAL CALIBRATION DIRECTORY")
 
   # summarise internal calibration being used
   cat("Internal Calibration data read from:",
@@ -65,7 +73,7 @@ doCalibration <- function(path = ".", nsim = 999, trim = FALSE) {
   # CHOOSE THE FILEPATH WHERE YOUR EXTERNAL CALIBRATION RESIDES
   default <- dir(file.path(path, "External_Calibrations"), full.names = TRUE, pattern = "^[0-9]{6}$")
   if (length(default) == 0) default <- path
-  externalCalDir <- choose.dir(default = default, caption = "CHOOSE EXTERNAL CALIBRATION DIRECTORY")
+  externalCalDir <- choose_directory(default = default, caption = "CHOOSE EXTERNAL CALIBRATION DIRECTORY")
 
   # summarise external calibration being used
   cat("\n\tExternal Calibration data read from:",

@@ -15,7 +15,8 @@ Imports:
     graphics,
     stats,
     utils,
-    mgcv
+    mgcv,
+    tcltk
 Suggests: knitr
 License: file LICENSE
 LazyData: true

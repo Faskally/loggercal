@@ -12,7 +12,7 @@
 #'   raw temps to true and raw temps to SE of approx (3) output a file containing calibration
 #'   results by logger for use as a bulk upload to FLEObs database
 #'
-#' @author Colin Millar.
+#' @author Colin Millar and Karen Millidine
 #'
-NA
 
+NA

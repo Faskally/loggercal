@@ -1,10 +1,14 @@
 Package: loggercal
 Title: Estimation of Calibration Equations for Temperature Data Loggers
 Version: 1.0-0
-Authors@R: "Colin Millar <colinpmillar@gmail.com> [aut,cre]"
-Description: Contains all functions required to (1) Read in temperature logger calibration data
-  (External and Internal) (2) calculate approximate calibration functions to convert
-  raw temps to true and raw temps to SE of approx (3) output a file containing calibration
+Authors@R: c(person(given = "Colin", family = "Millar",
+  role = c("aut", "cre"), email = "colinpmillar@gmail.com"),
+  person(given = "Karen", family = "Millidine", role = "aut",
+  email = "k.millidine@marlab.ac.uk"))
+Description: Contains all functions required to (1) Read in temperature
+  logger calibration data (External and Internal) (2) calculate
+  approximate calibration functions to convert raw temps to true and
+  raw temps to SE of approx (3) output a file containing calibration
   results by logger for use as a bulk upload to FLEObs database.
 Imports:
     grDevices,
@@ -16,4 +20,5 @@ Suggests: knitr
 License: file LICENSE
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 6.0.0
+RoxygenNote: 7.1.1
+Encoding: UTF-8

@@ -12,5 +12,5 @@ Contains all functions required to (1) Read in temperature logger calibration da
   results by logger for use as a bulk upload to FLEObs database
 }
 \author{
-Colin Millar.
+Colin Millar and Karen Millidine
 }

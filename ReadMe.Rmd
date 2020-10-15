@@ -86,7 +86,7 @@ plot(internalCal)
 ## run the calibration
 
 The function `calibration` runs the full calibration method.  Here, as we are running an example,
-we only use 5 simulations to back calculate the logger error.  Normally a large number like 99 or 
+we only use 5 simulations to back calculate the logger error.  Normally a large number like 99 or
 999 should be used, but this can take up to a day to run.
 
 ```{r run calibration}

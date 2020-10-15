@@ -14,3 +14,5 @@
 .Rproj.user
 
 R/run_all.R
+
+*.code-workspace

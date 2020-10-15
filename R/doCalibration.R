@@ -1,34 +1,48 @@
 
 #' POINT AND CLICK CALIBRATION CODE
-
-# Function arguments:
-
-# internalCalDir = the filepath of where the internal calibration file is located
-
-# externalCalDir = the filepath of where the external calibration file is located which
-#                  is appropriate for the internal calibration that you are working on
-
-# ukas = this reads the external calibration in
-
-# externalCalMod = this produces a model from the external calibration data
-
-# internalCal = this reads the internal calibration file in
-
-#-------------------------------------------------------------------------------------
-# CHOOSE WHERE YOUR FILES ARE LOCATED
-#-------------------------------------------------------------------------------------
-
-
+#'
+#' Function to provide an easy interface to use the calibation
+#' methods in the loggercal package
+#'
+#' @param path the location on disk where the calibration folders are
+#'   initially searched for (the default where the directory selection
+#'   dialogue opens).
+#' @param nsim number of simulations to run (see \code{\link{calibration}})
+#'
+#' @details
+#'
+#' When running the function the user will be asked to set various
+#' directorise where internal and external calibration data are stored:
+#' internalCalDir = the filepath of where the internal calibration file is located
+#' externalCalDir = the filepath of where the external calibration file is located which
+#'                  is appropriate for the internal calibration that you are working on
+#'
+#' @examples
+#'
+#' \dontrun{
+#' # set up a demo calibration folder structure
+#' # please set this to a suitable location on your system
+#' path <- "D:\\temp\\Calibration_data"
+#' caldir <- file.path(path, "Logger_calibrations", "250416")
+#' ukasdir <- file.path(path, "External_Calibrations", "010915")
+#' dir.create(caldir, recursive = TRUE)
+#' dir.create(ukasdir, recursive = TRUE)
+#' file.copy(system.file("calibration_files", "FullCalibration_250416.csv", package = "loggercal"), caldir)
+#' file.copy(system.file("calibration_files", "UKASCalibration_319151.csv", package = "loggercal"), ukasdir)
+#'  doCalibration(path, nsim = 10)
+#'}
+#'
 #' @importFrom grDevices pdf
 #' @importFrom graphics lines par
 #' @importFrom utils choose.dir flush.console write.csv
 #' @export
-doCalibration <- function(path = ".", nsim = 9999) {
+doCalibration <- function(path = ".", nsim = 999, trim = FALSE) {
 
 
   # CHOOSE THE FILEPATH WHERE YOUR INTERNAL CALIBRATION EXPERIMENT RESIDES
-  internalCalDirs <- dir(path, full.names = TRUE)[grep("^[0-9][0-9][0-9][0-9][0-9][0-9]$", dir())]
-  internalCalDir <- choose.dir(default = internalCalDirs[1], caption = "CHOOSE INTERNAL CALIBRATION DIRECTORY")
+  default <- dir(file.path(path, "Logger_calibrations"), full.names = TRUE, pattern = "^[0-9]{6}$")
+  if (length(default) == 0) default <- path
+  internalCalDir <- choose.dir(default = default, caption = "CHOOSE INTERNAL CALIBRATION DIRECTORY")
 
   # summarise internal calibration being used
   cat("Internal Calibration data read from:",
@@ -38,8 +52,9 @@ doCalibration <- function(path = ".", nsim = 9999) {
   flush.console()
 
   # CHOOSE THE FILEPATH WHERE YOUR EXTERNAL CALIBRATION RESIDES
-  externalCalDirs <- dir(getwd(), full.names = TRUE)[grep("^[0-9][0-9][0-9][0-9][0-9][0-9]$", dir())]
-  externalCalDir <- choose.dir(default = externalCalDirs[1], caption = "CHOOSE EXTERNAL CALIBRATION DIRECTORY")
+  default <- dir(file.path(path, "External_Calibrations"), full.names = TRUE, pattern = "^[0-9]{6}$")
+  if (length(default) == 0) default <- path
+  externalCalDir <- choose.dir(default = default, caption = "CHOOSE EXTERNAL CALIBRATION DIRECTORY")
 
   # summarise external calibration being used
   cat("\n\tExternal Calibration data read from:",
@@ -57,7 +72,7 @@ doCalibration <- function(path = ".", nsim = 9999) {
   cat("\n\tDONE!", "\n\t")
   flush.console()
 
-  externalCalMod <- lapply(ukas$ data, function(x) mgcv::gam(cal ~ s(control, k = 3), data = x))
+  externalCalMod <- lapply(ukas$data, function(x) mgcv::gam(cal ~ s(control, k = 3), data = x))
 
   # READ THE INTERNAL CALIBRATION FILE IN
   cat("\n\tReading internal calibration data ... ", "\n\t")
@@ -72,8 +87,10 @@ doCalibration <- function(path = ".", nsim = 9999) {
   # SELECT THE START AND STOP TIME FOR THE EXPERIMENT
   #----------------------------------------------------
 
-  internalCal <- findStartSec(internalCal)
-  internalCal <- findStopSec(internalCal)
+  if (trim) {
+    internalCal <- findStartSec(internalCal)
+    internalCal <- findStopSec(internalCal)
+  }
 
   #------------------------------------------------------------------------------
   #
@@ -81,7 +98,7 @@ doCalibration <- function(path = ".", nsim = 9999) {
   #
   #------------------------------------------------------------------------------
 
-  cal <- calibration(internalCal, externalCalMod, n = 999)
+  cal <- calibration(internalCal, externalCalMod, nsim = nsim)
 
   #------------------------------
   #
@@ -128,19 +145,22 @@ doCalibration <- function(path = ".", nsim = 9999) {
       if (length(ukas$data[]) == 1) {
         plot(cal - control ~ control,
           data = ukas$data[[1]], pch = 16, cex = 0.5,
-          ylab = "calibration logger bias", xlab = "temperature", las = 1
+          ylab = "calibration logger bias", xlab = "temperature", las = 1,
+          main = "External logger calibration"
         )
         lines(temp, predict(externalCalMod[[1]], list(control = temp)) - temp)
       } else {
         plot(cal - control ~ control,
           data = ukas$data[[1]], pch = 16, cex = 0.5,
-          ylab = "calibration logger bias", xlab = "temperature", las = 1
+          ylab = "calibration logger bias", xlab = "temperature", las = 1,
+          main = "External logger calibration"
         )
         lines(temp, predict(externalCalMod[[1]], list(control = temp)) - temp)
 
         plot(cal - control ~ control,
           data = ukas$data[[2]], pch = 16, cex = 0.5,
-          ylab = "calibration logger bias", xlab = "temperature"
+          ylab = "calibration logger bias", xlab = "temperature",
+          main = "External logger calibration"
         )
         lines(temp, predict(externalCalMod[[2]], list(control = temp)) - temp)
       }
@@ -151,12 +171,13 @@ doCalibration <- function(path = ".", nsim = 9999) {
   )
 
   # plot calibration experiment
-  plot(internalCal)
+  plot(internalCal, main = "Internal logger bias (over time)")
 
   par(mfrow = c(3, 3))
   for (logger_name in names(cal)) {
     quick_plot(logger_name)
   }
+  mtext("Modelled bias for internal loggers", 3, -1, outer = TRUE)
 
   dev.off()
 
@@ -176,7 +197,8 @@ doCalibration <- function(path = ".", nsim = 9999) {
 
   write.csv(
     file = paste0(internalCalDir, "/", "full_calibration_coefs_", paste0(basename(internalCalDir)), ".csv"),
-    tab, row.names = FALSE
+    tab, row.names = FALSE,
+    fileEncoding = "UTF-8"
   )
 
   cat("Done\n",

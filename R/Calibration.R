@@ -9,7 +9,13 @@
 #'
 #' @param internalCal A number.
 #' @param externalCalMod A number.
-#' @param n A number.
+#' @param nsim number of simulations to run in the estimation.
+#'
+#' @notes
+#'
+#' \code{nsim} is the simulations used to back calculate the logger
+#' error.  Normally a large number like 99 or 999 should be used, but
+#' note that this can take a while to run.
 #'
 #' @return models for calibration and SE models.
 #'
@@ -22,7 +28,7 @@
 #'
 #' @export
 
-calibration <- function(internalCal, externalCalMod, n = 99) {
+calibration <- function(internalCal, externalCalMod, nsim = 999) {
 
   message("Setting up calibration regressions.")
 
@@ -118,4 +124,3 @@ calibration <- function(internalCal, externalCalMod, n = 99) {
 
   out
 }
-

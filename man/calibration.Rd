@@ -4,14 +4,14 @@
 \alias{calibration}
 \title{Fit a calibration regression and estimate logger error.}
 \usage{
-calibration(internalCal, externalCalMod, n = 99)
+calibration(internalCal, externalCalMod, nsim = 999)
 }
 \arguments{
 \item{internalCal}{A number.}
 
 \item{externalCalMod}{A number.}
 
-\item{n}{A number.}
+\item{nsim}{number of simulations to run in the estimation.}
 }
 \value{
 models for calibration and SE models.

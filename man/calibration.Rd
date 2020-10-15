@@ -24,3 +24,8 @@ This function:
    * fits a calibration model to each non-calibration logger
    * returns models for calibration and SE models
 }
+\details{
+\code{nsim} is the simulations used to back calculate the logger
+error.  Normally a large number like 99 or 999 should be used, but
+note that this can take a while to run.
+}

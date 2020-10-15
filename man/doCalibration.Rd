@@ -12,6 +12,9 @@ initially searched for (the default where the directory selection
 dialogue opens).}
 
 \item{nsim}{number of simulations to run (see \code{\link{calibration}})}
+
+\item{trim}{if TRUE the user can trim internal logger data at the
+start and end of the data series interactively (default = FALSE)}
 }
 \description{
 Function to provide an easy interface to use the calibation
@@ -34,8 +37,17 @@ caldir <- file.path(path, "Logger_calibrations", "250416")
 ukasdir <- file.path(path, "External_Calibrations", "010915")
 dir.create(caldir, recursive = TRUE)
 dir.create(ukasdir, recursive = TRUE)
-file.copy(system.file("calibration_files", "FullCalibration_250416.csv", package = "loggercal"), caldir)
-file.copy(system.file("calibration_files", "UKASCalibration_319151.csv", package = "loggercal"), ukasdir)
+file.copy(
+  system.file(
+    "calibration_files", "FullCalibration_250416.csv",
+    package = "loggercal"),
+  caldir)
+file.copy(
+  system.file(
+    "calibration_files", "UKASCalibration_319151.csv",
+    package = "loggercal"),
+  ukasdir)
+
  doCalibration(path, nsim = 10)
 }
 

@@ -8,6 +8,8 @@
 #'   initially searched for (the default where the directory selection
 #'   dialogue opens).
 #' @param nsim number of simulations to run (see \code{\link{calibration}})
+#' @param trim if TRUE the user can trim internal logger data at the
+#'   start and end of the data series interactively (default = FALSE)
 #'
 #' @details
 #'
@@ -27,13 +29,22 @@
 #' ukasdir <- file.path(path, "External_Calibrations", "010915")
 #' dir.create(caldir, recursive = TRUE)
 #' dir.create(ukasdir, recursive = TRUE)
-#' file.copy(system.file("calibration_files", "FullCalibration_250416.csv", package = "loggercal"), caldir)
-#' file.copy(system.file("calibration_files", "UKASCalibration_319151.csv", package = "loggercal"), ukasdir)
+#' file.copy(
+#'   system.file(
+#'     "calibration_files", "FullCalibration_250416.csv",
+#'     package = "loggercal"),
+#'   caldir)
+#' file.copy(
+#'   system.file(
+#'     "calibration_files", "UKASCalibration_319151.csv",
+#'     package = "loggercal"),
+#'   ukasdir)
+#'
 #'  doCalibration(path, nsim = 10)
 #'}
 #'
 #' @importFrom grDevices pdf
-#' @importFrom graphics lines par
+#' @importFrom graphics lines par mtext
 #' @importFrom utils choose.dir flush.console write.csv
 #' @export
 doCalibration <- function(path = ".", nsim = 999, trim = FALSE) {

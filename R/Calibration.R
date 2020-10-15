@@ -11,7 +11,7 @@
 #' @param externalCalMod A number.
 #' @param nsim number of simulations to run in the estimation.
 #'
-#' @notes
+#' @details
 #'
 #' \code{nsim} is the simulations used to back calculate the logger
 #' error.  Normally a large number like 99 or 999 should be used, but

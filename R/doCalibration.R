@@ -45,16 +45,16 @@
 #'
 #' @importFrom grDevices pdf
 #' @importFrom graphics lines par mtext
-#' @importFrom utils choose.dir flush.console write.csv
+#' @importFrom utils flush.console write.csv
 #' @importFrom tcltk tk_choose.dir
 #' @export
 doCalibration <- function(path = ".", nsim = 999, trim = FALSE) {
 
   choose_directory <- function(default, caption) {
     if (.Platform$OS.type == "windows") {
-      choose.dir(default = default, caption = caption)
+      utils::choose.dir(default = default, caption = caption)
     } else {
-      tk_choose.dir(default = default, caption = caption)
+      tcltk::tk_choose.dir(default = default, caption = caption)
     }
   }
 
